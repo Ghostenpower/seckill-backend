@@ -6,29 +6,29 @@
 <mapper namespace="com.example.seckill_backend.mapper.UserMapper">
 
     <resultMap id="UserResultMap" type="com.example.seckill_backend.model.User">
-        <id property="id" column="id"/>
+        <id property="user_id" column="user_id"/>
         <result property="username" column="username"/>
-        <result property="password" column="password"/>
+        <result property="password_hash" column="password_hash"/>
     </resultMap>
 
     <select id="getUserById" resultMap="UserResultMap">
-        SELECT * FROM user WHERE id = #{id}
+        SELECT * FROM user WHERE user_id = #{user_id}
     </select>
 
     <select id="getUserByUsername" resultMap="UserResultMap">
-        SELECT * FROM user WHERE username = #{username}
+        SELECT * FROM user WHERE password_hash = #{password_hash}
     </select>
 
     <insert id="insertUser" parameterType="com.example.seckill_backend.model.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (username, password) VALUES (#{username}, #{password})
+        INSERT INTO user (username, password_hash) VALUES (#{username}, #{password_hash})
     </insert>
 
     <update id="updateUser" parameterType="com.example.seckill_backend.model.User">
-        UPDATE user SET username = #{username}, password = #{password} WHERE id = #{id}
+        UPDATE user SET username = #{username}, password_hash = #{password_hash} WHERE user_id = #{user_id}
     </update>
 
     <delete id="deleteUser">
-        DELETE FROM user WHERE id = #{id}
+        DELETE FROM user WHERE user_id = #{user_id}
     </delete>
 
 </mapper>

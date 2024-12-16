@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.seckill_backend.mapper.FlashSaleMapper">
+
+    <select id="getFlashSale" resultType="com.example.seckill_backend.model.FlashSale">
+        SELECT * FROM flash_sale
+        <where>
+            <if test="flash_sale_id != null">
+                flash_sale_id = #{flash_sale_id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -3,11 +3,17 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/seckill?serverTimezone=UTC&characterEncoding=utf8
-    username: seckill
-    password: seckill
+    url: jdbc:mysql://localhost:3306/seckill_db
+    username: root
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.seckill_backend.model
+
+logging:
+  pattern:
+    console: "%d - %msg%n"
+  file:
+    path: ../log/seckill_backend.log
