@@ -39,4 +39,13 @@ public class CommonExceptionHandler {
         // 使用自定义的 Result 类来返回响应
         return Result.error("Illegal parameters:" + ex.getMessage());
     }
+
+    // 捕获 RuntimeException 异常
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 可根据需求调整状态码
+    @ResponseBody
+    public Result handleRuntimeException(RuntimeException ex) {
+        log.error("捕获到 RuntimeException: ", ex); // 使用 @Slf4j 打印日志
+        return Result.error(ex.getMessage());
+    }
 }

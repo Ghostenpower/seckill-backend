@@ -1,5 +1,6 @@
 package com.example.seckill_backend.controller;
 
+import com.example.seckill_backend.model.Result;
 import com.example.seckill_backend.model.User;
 import com.example.seckill_backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -21,14 +24,14 @@ public class UserController {
      * 用户注册接口
      */
     @PostMapping("/register")
-    public String register(@RequestBody @Validated(User.Register.class) User user) {
+    public Result register(@RequestBody @Validated(User.Register.class) User user) {
         log.trace("register");
         try {
-            userService.register(user.getUsername(), user.getPassword_hash());
-            return "registration success";
+            userService.register(user);
+            return Result.success("registration success");
         } catch (RuntimeException e) {
             log.error("register failed", e);
-            return "registration failed:" + e.getMessage();
+            return Result.error("registration failed:" + e.getMessage());
         }
     }
 
@@ -36,12 +39,8 @@ public class UserController {
      * 用户登录接口
      */
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        try {
-            userService.login(user.getUsername(), user.getPassword_hash());
-            return "login successful";
-        } catch (Exception e) {
-            return "Login failed:" + e.getMessage();
-        }
+    public Result login(@RequestBody User user) {
+        Map<String, Object> tokenMap = userService.login(user);
+        return Result.success(tokenMap);
     }
 }

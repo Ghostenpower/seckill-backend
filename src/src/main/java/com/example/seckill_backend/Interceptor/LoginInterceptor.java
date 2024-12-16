@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -48,15 +49,15 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             // 提取用户名和密码
             String username = (String) claims.get("username");
-            String password = (String) claims.get("password");
+            Integer user_id = (Integer) claims.get("user_id");
 
             // 输出账号和密码（如果需要的话）
             log.info("Username: {}", username);
-            log.info("Password: {}", password);
+            log.info("user_id: {}", user_id);
 
             // 将账号和密码添加到请求属性中，后续的代码可以获取
+            request.setAttribute("user_id", user_id);
             request.setAttribute("username", username);
-            request.setAttribute("password", password);
 
             // 你也可以将 claims 设置到 ThreadLocal 中以便后续使用
             ThreadLocalUntil.set(claims);

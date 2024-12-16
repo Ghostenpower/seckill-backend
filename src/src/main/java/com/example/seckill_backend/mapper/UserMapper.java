@@ -8,11 +8,13 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
     User getUserById(@Param("id") Long id);
 
-    User getUserByUsername(@Param("username") String username);
+    User getUserByUsername(User user);
 
     int insertUser(User user);
 
     int updateUser(User user);
 
     int deleteUser(@Param("id") Long id);
+
+    String getPassword_hash(User user);
 }

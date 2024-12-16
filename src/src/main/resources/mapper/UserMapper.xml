@@ -16,10 +16,10 @@
     </select>
 
     <select id="getUserByUsername" resultMap="UserResultMap">
-        SELECT * FROM user WHERE password_hash = #{password_hash}
+        SELECT * FROM user WHERE username=#{username}
     </select>
 
-    <insert id="insertUser" parameterType="com.example.seckill_backend.model.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertUser" parameterType="com.example.seckill_backend.model.User" useGeneratedKeys="true" keyProperty="user_id">
         INSERT INTO user (username, password_hash) VALUES (#{username}, #{password_hash})
     </insert>
 
@@ -31,4 +31,7 @@
         DELETE FROM user WHERE user_id = #{user_id}
     </delete>
 
+    <select id="getPassword_hash" resultType="String">
+        select password_hash from user where username = #{username}
+    </select>
 </mapper>

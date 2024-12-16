@@ -10,6 +10,8 @@ import java.util.Date;
 
 @Data
 public class User {
+    @NotNull(message = "用户ID不能为空",groups ={SearchOrder.class})
+    @NotBlank(message = "用户ID不能为空",groups ={SearchOrder.class})
     private Integer user_id;         // 用户ID，主键
     @NotNull(message = "用户名不能为空",groups ={Register.class})
     @NotBlank(message = "用户名不能为空",groups ={Register.class})
@@ -26,5 +28,6 @@ public class User {
     private BigDecimal balance;     // 余额
 
     public interface Register{}
+    public interface SearchOrder{}
 
 }

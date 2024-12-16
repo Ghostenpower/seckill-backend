@@ -4,11 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.seckill_backend.mapper.OrderMapper">
     <select id="getOrder" resultType="com.example.seckill_backend.model.Order">
-        SELECT * FROM order
+        SELECT * FROM orders
         <where>
-            <if test="userId != null">
-                user_id = #{userId}
+            <if test="user_id != null">
+                user_id = #{user_id}
             </if>
         </where>
+        limit #{page_size} offset #{offset}
     </select>
 </mapper>
