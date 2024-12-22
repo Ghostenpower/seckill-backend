@@ -12,4 +12,7 @@
         </where>
         limit #{page_size} offset #{offset}
     </select>
+    <select id="createOrder" resultType="java.lang.Integer">
+        INSERT INTO orders(user_id, product_id, quantity, total_price, status) VALUES (#{user_id},#{product_id},#{quantity},#{total_price},1)
+    </select>
 </mapper>

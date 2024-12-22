@@ -34,4 +34,8 @@
     <select id="getPassword_hash" resultType="String">
         select password_hash from user where username = #{username}
     </select>
+
+    <select id="isAdmin" resultType="java.lang.Boolean">
+        select is_admin from user where user_id = #{user_id}
+    </select>
 </mapper>

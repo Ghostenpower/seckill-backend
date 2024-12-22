@@ -4,13 +4,60 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.seckill_backend.mapper.FlashSaleMapper">
 
-    <select id="getFlashSale" resultType="com.example.seckill_backend.model.FlashSale">
+    <select id="getFlashSaleById" resultType="com.example.seckill_backend.model.FlashSale">
         SELECT * FROM flash_sale
         <where>
-            <if test="flash_sale_id != null">
+            <if test="flash_sale_id != null" >
                 flash_sale_id = #{flash_sale_id}
             </if>
         </where>
     </select>
+
+    <select id="getFlashSale" resultType="com.example.seckill_backend.model.FlashSale">
+        SELECT * FROM flash_sale
+        <where>
+            <if test="flash_sale_id != null" >
+                flash_sale_id = #{flashSale.flash_sale_id}
+            </if>
+            <if test="product_id != null" >
+                AND product_id = #{flashSale.product_id}
+            </if>
+            <if test="status != null" >
+                AND status = #{flashSale.status}
+            </if>
+        </where>
+        limit #{page_size} offset #{offset}
+    </select>
+
+    <insert id="initializeFlashSale" keyProperty="flash_sale_id" useGeneratedKeys="true">
+        INSERT INTO flash_sale( product_id, start_time, end_time, total_stock, flash_price)
+        VALUES ( #{product_id}, #{start_time}, #{end_time}, #{total_stock}, #{flash_price})
+    </insert>
+
+    <update id="updateFlashSale">
+        UPDATE flash_sale
+        <set>
+            <if test="total_stock != null">
+                total_stock = #{total_stock},
+            </if>
+            <if test="flash_price != null">
+                flash_price = #{flash_price},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="start_time != null">
+                start_time = #{start_time},
+            </if>
+            <if test="end_time != null">
+                end_time = #{end_time},
+            </if>
+            <if test="sold_count != null">
+                sold_count = #{sold_count},
+            </if>
+
+        </set>
+        WHERE flash_sale_id = #{flash_sale_id}
+    </update>
 
 </mapper>

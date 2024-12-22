@@ -1,5 +1,6 @@
 package com.example.seckill_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -13,13 +14,13 @@ public class FlashSale {
     @NotNull(message = "秒杀活动ID不能为空", groups = {Get.class})
     @Builder.Default
     private Integer flash_sale_id=null; // 秒杀活动ID
-    @NotNull(message = "商品ID不能为空", groups = {Create.class, Get.class})
+    @NotNull(message = "商品ID不能为空", groups = {Create.class})
     private Integer product_id; // 商品ID
     @NotNull(message = "秒杀开始时间不能为空", groups = {Create.class})
-    @NotBlank(message = "秒杀开始时间不能为空", groups = {Create.class})
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime start_time; // 活动开始时间
     @NotNull(message = "秒杀结束时间不能为空", groups = {Create.class})
-    @NotBlank(message = "秒杀结束时间不能为空", groups = {Create.class})
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime end_time; // 活动结束时间
     @NotNull(message = "秒杀价格不能为空", groups = {Create.class})
     private BigDecimal flash_price; // 秒杀价格

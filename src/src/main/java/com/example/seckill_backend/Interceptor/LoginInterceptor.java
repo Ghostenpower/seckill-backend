@@ -1,6 +1,7 @@
 package com.example.seckill_backend.Interceptor;
 
 import com.example.seckill_backend.model.Result;
+import com.example.seckill_backend.model.User;
 import com.example.seckill_backend.util.JWT;
 import com.example.seckill_backend.util.ThreadLocalUntil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -20,8 +20,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
-
-        log.info("Token: " + token);
 
         try {
             // 校验token是否合法
@@ -45,19 +43,17 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             // 解析 JWT
             Map<String, Object> claims = JWT.parseJWT(token);
-            log.info("Claims: " + claims.toString());
 
             // 提取用户名和密码
             String username = (String) claims.get("username");
             Integer user_id = (Integer) claims.get("user_id");
 
-            // 输出账号和密码（如果需要的话）
-            log.info("Username: {}", username);
-            log.info("user_id: {}", user_id);
-
             // 将账号和密码添加到请求属性中，后续的代码可以获取
-            request.setAttribute("user_id", user_id);
-            request.setAttribute("username", username);
+            User user = new User();
+            user.setUser_id(user_id);
+            user.setUsername(username);
+
+            request.setAttribute("user", user);
 
             // 你也可以将 claims 设置到 ThreadLocal 中以便后续使用
             ThreadLocalUntil.set(claims);

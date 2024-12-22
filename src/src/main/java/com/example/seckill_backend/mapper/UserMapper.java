@@ -10,11 +10,13 @@ public interface UserMapper {
 
     User getUserByUsername(User user);
 
-    int insertUser(User user);
+    void insertUser(User user);
 
-    int updateUser(User user);
+    void updateUser(User user);
 
-    int deleteUser(@Param("id") Long id);
+    void deleteUser(@Param("id") Long id);
 
     String getPassword_hash(User user);
+
+    Boolean isAdmin(User user);
 }

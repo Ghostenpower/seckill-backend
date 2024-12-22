@@ -1,5 +1,6 @@
 package com.example.seckill_backend.util;
 
+import com.example.seckill_backend.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,6 +28,11 @@ public class JWT {
                 .parseClaimsJws(jwt)
                 .getBody();
         return claims;
+    }
+
+    public static Integer getUserId(String jwt){
+        Claims claims=parseJWT(jwt);
+        return (Integer)claims.get("user_id");
     }
 
 }

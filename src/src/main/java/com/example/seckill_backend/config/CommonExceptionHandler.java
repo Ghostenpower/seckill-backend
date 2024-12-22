@@ -9,6 +9,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @Slf4j
 @RestControllerAdvice
 public class CommonExceptionHandler {
@@ -18,7 +20,7 @@ public class CommonExceptionHandler {
     @ResponseBody
     public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
-        StringBuilder sb = new StringBuilder("校验失败:");
+        StringBuilder sb = new StringBuilder("Verification failed:");
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             sb.append(fieldError.getField()).append(":").append(fieldError.getDefaultMessage()).append(", ");
         }
@@ -45,7 +47,15 @@ public class CommonExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) // 可根据需求调整状态码
     @ResponseBody
     public Result handleRuntimeException(RuntimeException ex) {
-        log.error("捕获到 RuntimeException: ", ex); // 使用 @Slf4j 打印日志
-        return Result.error(ex.getMessage());
+        log.error("RuntimeException: ", ex); // 使用 @Slf4j 打印日志
+        return Result.error("RuntimeException"+ex.getMessage());
+    }
+
+    @ExceptionHandler(SQLException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public Result handleSQLException(SQLException ex) {
+        log.error("捕获到 SQLException: ", ex);
+        return Result.error("Database exception:"+ex);
     }
 }
