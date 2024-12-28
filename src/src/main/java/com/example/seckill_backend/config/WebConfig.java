@@ -20,7 +20,7 @@ public class WebConfig extends WebMvcConfigurationSupport {
     protected void addInterceptors(InterceptorRegistry registry) {
         //注册了拦截器对象
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/user/register","/user/login","/admin/login");
+                .excludePathPatterns("/user/register","/user/login","/user/adminLogin");
     }
 
     @Override

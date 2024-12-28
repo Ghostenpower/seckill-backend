@@ -16,4 +16,6 @@ public interface OrderMapper {
     Integer getOrderTotal(User user);
 
     void createOrder(Integer user_id, Integer flash_sale_id , Integer product_id, Integer quantity, BigDecimal total_price);
+
+    void createFlashOrder(Integer user_id, int flash_sale_id, int product_id, int i, BigDecimal total_price);
 }

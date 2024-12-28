@@ -7,6 +7,7 @@ import com.example.seckill_backend.model.Result;
 import com.example.seckill_backend.model.User;
 import com.example.seckill_backend.service.OrderService;
 import com.example.seckill_backend.util.rateLimiter.Limit;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,8 @@ public class OrderController {
     }
 
     @RequestMapping("/getOrder")
-    public Result getOrder(@MultiRequestBody @Validated(User.SearchOrder.class) User user, @MultiRequestBody @Validated Page page) {
-        return Result.success(orderService.getOrder(user, page));
+    public Result getOrder(@MultiRequestBody @Validated Page<Object> page, HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        return orderService.getOrder(user, page);
     }
 }

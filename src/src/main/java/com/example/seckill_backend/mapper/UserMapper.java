@@ -4,6 +4,8 @@ import com.example.seckill_backend.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
     User getUserById(@Param("id") Long id);
@@ -14,9 +16,17 @@ public interface UserMapper {
 
     void updateUser(User user);
 
-    void deleteUser(@Param("id") Long id);
+    void deleteUser(Integer user_id);
 
     String getPassword_hash(User user);
 
     Boolean isAdmin(User user);
+
+    Object getUserInfo(User user);
+
+    List<User> getUserList(@Param("user") User user, @Param("page_size") Integer page_size, @Param("offset") Integer offset);
+
+    Integer getUserListCount(User user);
+
+    void createUser(User user);
 }

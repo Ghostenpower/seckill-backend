@@ -4,22 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.seckill_backend.mapper.ProductMapper">
     <insert id="createProduct" keyProperty="product_id" useGeneratedKeys="true">
-        INSERT INTO product(name, price, stock, status)
-        VALUES (#{name}, #{price}, #{stock}, #{status})
+        INSERT INTO product(name, price, stock, status,description)
+        VALUES (#{name}, #{price}, #{stock}, #{status}, #{description})
     </insert>
     <select id="getProduct" resultType="com.example.seckill_backend.model.Product">
         SELECT * FROM product
-        <where>
-            <if test="product_id != null" >
-                product_id = #{product_id}
-            </if>
-            <if test="name != null" >
-                AND name = #{name}
-            </if>
-            <if test="status != null" >
-                AND status = #{status}
-            </if>
-        </where>
         limit #{page_size} offset #{offset}
     </select>
     <select id="getProductById" resultType="com.example.seckill_backend.model.Product">
@@ -51,4 +40,27 @@
     <delete id="deleteProduct">
         DELETE FROM product WHERE product_id = #{product_id}
     </delete>
+    <select id="getProductByName" resultType="com.example.seckill_backend.model.Product">
+        SELECT * FROM product
+        <where>
+            <if test="name != null and name!=''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        limit #{page_size} offset #{offset}
+    </select>
+    <select id="getProductCountByName" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM product
+        <where>
+            <if test="name != null and name!=''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="descreaseStock" resultType="java.lang.Integer">
+        UPDATE product SET stock = stock - #{num} WHERE product_id = #{product_id} AND stock > 0
+    </select>
+    <select id="getProductCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM product
+    </select>
 </mapper>

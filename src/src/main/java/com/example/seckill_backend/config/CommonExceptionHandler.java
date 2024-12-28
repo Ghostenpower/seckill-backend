@@ -38,6 +38,7 @@ public class CommonExceptionHandler {
     // 捕获 IllegalArgumentException 异常
     @ExceptionHandler(IllegalArgumentException.class)
     public Result handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.error("IllegalArgumentException: ", ex);
         // 使用自定义的 Result 类来返回响应
         return Result.error("Illegal parameters:" + ex.getMessage());
     }

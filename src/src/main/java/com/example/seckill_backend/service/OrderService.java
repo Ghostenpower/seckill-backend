@@ -5,6 +5,7 @@ import com.example.seckill_backend.model.Order;
 import com.example.seckill_backend.model.Page;
 import com.example.seckill_backend.model.Result;
 import com.example.seckill_backend.model.User;
+import com.example.seckill_backend.util.PagerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
-    public Result getOrder(User user, Page<List<Object>> page) {
+    public Result getOrder(User user, Page<Object> page) {
         try {
             Integer total = orderMapper.getOrderTotal(user);
             if (total == null || total < 0) {
@@ -26,15 +27,10 @@ public class OrderService {
             }
             page.setTotal(total);
 
-            List<Order> orders = orderMapper.getOrder(user.getUser_id(),page.getPage_size(),page.getPage_size()*(page.getPage_num()-1));
-            if (orders == null) {
-                orders = new ArrayList<>();
-            }
-            Page<List<Order>> resultPage = new Page<>();
-            resultPage.setTotal(page.getTotal());
-            resultPage.setItems(orders);
+            List<Order> orders = orderMapper.getOrder(user.getUser_id(), page.getPage_size(), PagerUtil.getOffset(page.getPage_num(), page.getPage_size()));
+            page.setItems(orders);
 
-            return Result.success(resultPage);
+            return Result.success(page);
         } catch (Exception e) {
             // 处理异常，例如记录日志或返回一个默认的 Page 对象
             log.error("获取订单失败", e);

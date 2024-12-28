@@ -64,7 +64,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             log.error("Token error: {}", e.getMessage());
 
             // 构建统一的返回结果：Token 验证失败
-            Result result = Result.error("Token 验证失败");
+            Result result = Result.error("NOT_LOGIN");
 
             // 设置响应的 Content-Type 为 JSON 格式
             response.setContentType("application/json");

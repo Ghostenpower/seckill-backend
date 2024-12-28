@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 public class Product {
-    @NotNull(message = "商品ID不能为空", groups = {Update.class, DELETE.class,Search.class})
+    @NotNull(message = "商品ID不能为空", groups = {Update.class, DELETE.class,Search.class,Buy.class})
     private Integer product_id; // 商品ID
     @NotNull(message = "商品名称不能为空", groups = {Create.class})
     @NotBlank(message = "商品名称不能为空", groups = {Create.class})
@@ -32,4 +32,6 @@ public class Product {
     public interface Search {}
 
     public interface Test{}
+
+    public interface Buy{}
 }

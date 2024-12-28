@@ -59,5 +59,65 @@
         </set>
         WHERE flash_sale_id = #{flash_sale_id}
     </update>
+    <select id="getFlashSaleLimit3" resultType="com.example.seckill_backend.model.FlashSale">
+            SELECT * FROM flash_sale
+            ORDER BY start_time DESC
+            LIMIT 3
+    </select>
+    <select id="getFlashSaleProductLimit3" resultType="com.example.seckill_backend.model.FlashSaleView">
+        SELECT * from flash_sale_view where status=1 order by start_time desc limit 3
+    </select>
+    <select id="getCountByName" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM flash_sale_view
+        <where>
+            <if test="product_name != null and product_name!=''">
+                product_name LIKE CONCAT('%', #{product_name}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="getByName" resultType="com.example.seckill_backend.model.FlashSaleView">
+        SELECT * FROM flash_sale_view
+        <where>
+            <if test="product_name != null and product_name!=''">
+                product_name LIKE CONCAT('%', #{product_name}, '%')
+            </if>
+        </where>
+        limit #{page_size} offset #{offset}
+    </select>
 
+    <select id="decreaseStock" resultType="java.lang.Integer">
+        UPDATE flash_sale
+        SET  sold_count = sold_count + 1
+        WHERE flash_sale_id = #{flash_sale_id} AND total_stock > 0
+    </select>
+
+    <select id="getCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM flash_sale_view
+        <where>
+            <if test="name != null and name!=''">
+                product_name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="getFlashSaleView" resultType="com.example.seckill_backend.model.FlashSaleView">
+        SELECT * FROM flash_sale_view
+        <where>
+            <if test="name != null and name!=''">
+                product_name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        limit #{page_size} offset #{offset}
+    </select>
+    <select id="deleteFlashSale" resultType="java.lang.Integer">
+        DELETE FROM flash_sale where flash_sale_id = #{flash_sale_id}
+    </select>
+
+    <select id="checkRecord" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM flash_record user_id = #{user_id} AND flash_sale_id = #{flash_sale_id}
+    </select>
+
+    <select id="addRecord" resultType="java.lang.Integer">
+        INSERT INTO flash_record(user_id, flash_sale_id)
+        VALUES (#{user_id}, #{flash_sale_id})
+    </select>
 </mapper>

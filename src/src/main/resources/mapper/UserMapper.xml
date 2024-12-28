@@ -24,7 +24,28 @@
     </insert>
 
     <update id="updateUser" parameterType="com.example.seckill_backend.model.User">
-        UPDATE user SET username = #{username}, password_hash = #{password_hash} WHERE user_id = #{user_id}
+        UPDATE user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password_hash != null and password_hash != ''">
+                password_hash = #{password_hash},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="balance != null">
+                balance = #{balance},
+            </if>
+        </set>
+        WHERE user_id = #{user_id}
     </update>
 
     <delete id="deleteUser">
@@ -38,4 +59,75 @@
     <select id="isAdmin" resultType="java.lang.Boolean">
         select is_admin from user where user_id = #{user_id}
     </select>
+    <select id="getUserInfo" resultType="com.example.seckill_backend.model.User">
+            select user_id,username,email,phone,created_at,updated_at,is_admin,balance,status from user where user_id = #{user_id}
+    </select>
+    <select id="getUserList" resultType="com.example.seckill_backend.model.User">
+        select * from user
+        <where>
+            <if test="user.username != null and user.username!=''">
+                username like concat('%',#{user.username},'%')
+            </if>
+            <if test="user.email != null and user.email!=''">
+                email like concat('%',#{user.email},'%')
+            </if>
+            <if test="user.phone!=null and user.phone !=''">
+                phone like concat('%',#{user.phone},'%')
+            </if>
+            <if test="true">
+                and is_admin = 0
+            </if>
+        </where>
+            limit #{page_size} offset #{offset}
+    </select>
+    <select id="getUserListCount" resultType="java.lang.Integer">
+        select count(*) from user
+        <where>
+            <if test="username != null and username!=''">
+                username like concat('%', #{username}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                email like concat('%', #{email}, '%')
+            </if>
+            <if test="phone != null and phone != ''">
+                phone like concat('%', #{phone}, '%')
+            </if>
+            <if test="true">
+                and is_admin = 0
+            </if>
+        </where>
+    </select>
+    <insert id="createUser" parameterType="com.example.seckill_backend.model.User" useGeneratedKeys="true" keyProperty="user_id">
+        INSERT INTO user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password_hash != null">
+                password_hash,
+            </if>
+            <!-- 添加其他字段 -->
+            <if test="email != null">
+                email,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="password_hash != null">
+                #{password_hash},
+            </if>
+            <!-- 添加其他字段 -->
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+        </trim>
+    </insert>
 </mapper>

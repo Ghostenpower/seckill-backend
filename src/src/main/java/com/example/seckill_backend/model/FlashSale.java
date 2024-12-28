@@ -17,11 +17,9 @@ public class FlashSale {
     @NotNull(message = "商品ID不能为空", groups = {Create.class})
     private Integer product_id; // 商品ID
     @NotNull(message = "秒杀开始时间不能为空", groups = {Create.class})
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime start_time; // 活动开始时间
+    private Integer start_time; // 活动开始时间戳
     @NotNull(message = "秒杀结束时间不能为空", groups = {Create.class})
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime end_time; // 活动结束时间
+    private Integer end_time; // 活动结束时间戳
     @NotNull(message = "秒杀价格不能为空", groups = {Create.class})
     private BigDecimal flash_price; // 秒杀价格
     @NotNull(message = "秒杀库存数量不能为空", groups = {Create.class})

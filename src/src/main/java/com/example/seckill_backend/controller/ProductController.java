@@ -1,9 +1,11 @@
 package com.example.seckill_backend.controller;
 
+import com.example.seckill_backend.model.Page;
 import com.example.seckill_backend.model.Product;
 import com.example.seckill_backend.model.Result;
 import com.example.seckill_backend.model.User;
 import com.example.seckill_backend.service.ProductService;
+import com.example.seckill_backend.util.MultiRequestBody;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +27,18 @@ public class ProductController {
     }
 
     @PostMapping("/get")
-    public Result getProduct() {
-        return productService.getProduct();
+    public Result getProduct(@MultiRequestBody @Validated Page<Object> page) {
+        return productService.getProduct(page);
+    }
+
+    @PostMapping("/getByName")
+    public Result getProductByName(@MultiRequestBody @Validated Page<Object> page,@MultiRequestBody @Validated(Product.Search.class) Product product) {
+        return productService.getProductByName(page,product);
+    }
+
+    @PostMapping("/getByNamePlus")
+    public Result getByNamePlus(@MultiRequestBody @Validated Page<Object> page,@MultiRequestBody Product product) {
+        return productService.getProductByName(page,product);
     }
 
     @PostMapping("/getById")
@@ -49,5 +61,17 @@ public class ProductController {
     @PostMapping("/test")
     public Result test(@RequestBody @Validated(Product.Test.class) Product product){
         return Result.success();
+    }
+
+    @PostMapping("buy")
+    public Result buy(@MultiRequestBody @Validated(Product.Buy.class) Product product,@MultiRequestBody @Validated Integer num, HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        return productService.buy(product,num,user);
+    }
+
+    @PostMapping("edit")
+    public Result editProduct(@RequestBody @Validated(Product.Update.class) Product product, HttpServletRequest request) {
+        User admin = (User) request.getAttribute("user");
+        return productService.editProduct(product,admin);
     }
 }

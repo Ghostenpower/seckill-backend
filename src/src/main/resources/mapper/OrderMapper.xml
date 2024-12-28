@@ -15,4 +15,7 @@
     <select id="createOrder" resultType="java.lang.Integer">
         INSERT INTO orders(user_id, product_id, quantity, total_price, status) VALUES (#{user_id},#{product_id},#{quantity},#{total_price},1)
     </select>
+    <select id="createFlashOrder" resultType="java.lang.Integer">
+        INSERT INTO orders(user_id, flash_sale_id,product_id, quantity, total_price, status) VALUES (#{user_id},#{flash_sale_id},#{product_id},1,#{total_price},1)
+    </select>
 </mapper>

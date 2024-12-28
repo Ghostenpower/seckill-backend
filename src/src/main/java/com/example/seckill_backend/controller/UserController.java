@@ -1,8 +1,11 @@
 package com.example.seckill_backend.controller;
 
+import com.example.seckill_backend.model.Page;
 import com.example.seckill_backend.model.Result;
 import com.example.seckill_backend.model.User;
 import com.example.seckill_backend.service.UserService;
+import com.example.seckill_backend.util.MultiRequestBody;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -25,14 +28,7 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody @Validated(User.Register.class) User user) {
-        log.trace("register");
-        try {
-            userService.register(user);
-            return Result.success("registration success");
-        } catch (RuntimeException e) {
-            log.error("register failed", e);
-            return Result.error("registration failed:" + e.getMessage());
-        }
+        return userService.register(user);
     }
 
     /**
@@ -40,7 +36,45 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        Map<String, Object> tokenMap = userService.login(user);
-        return Result.success(tokenMap);
+        return userService.login(user);
+    }
+
+    @PostMapping("/verifyLogin")
+    public Result verifyLogin() {
+        return Result.success();
+    }
+
+    @PostMapping("/getUserInfo")
+    public Result getUserInfo(HttpServletRequest request) {
+        User user = (User) request.getAttribute("user");
+        return userService.getUserInfo(user);
+    }
+
+    @PostMapping("/getUserList")
+    public Result getUserList(@MultiRequestBody Page<Object> page,@MultiRequestBody User user , HttpServletRequest request) {
+        User admin = (User) request.getAttribute("user");
+        return userService.getUserList(user,page,admin);
+    }
+
+    @PostMapping("/createUser")
+    public Result createUser(@RequestBody @Validated(User.Register.class) User user) {
+        return userService.createUser(user);
+    }
+
+    @PostMapping("/editUser")
+    public Result editUser(@RequestBody @Validated(User.SearchOrder.class) User user,HttpServletRequest request) {
+        User admin = (User) request.getAttribute("user");
+        return userService.editUser(admin,user);
+    }
+
+    @PostMapping("adminLogin")
+    public Result adminLogin(@RequestBody @Validated(User.Login.class) User admin) {
+        return userService.adminLogin(admin);
+    }
+
+    @PostMapping("/deleteUserById")
+    public Result deleteUserBuId(@RequestBody @Validated(User.SearchOrder.class) User user,HttpServletRequest request) {
+        User admin = (User) request.getAttribute("user");
+        return userService.deleteUser(admin,user);
     }
 }
